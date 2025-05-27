@@ -6,3 +6,5 @@ This repository contains code written in Dr. Taylor's lectures for CSC1120, Data
 ### Week 1
 - Welcome
 - Please get started on Lab 1
+- Complete a reflection every class day
+- Stay tuned on homework
