@@ -3,6 +3,10 @@ This repository contains code written in Dr. Taylor's lectures for CSC1120, Data
 
 ## Announcements
 
+### Week 2
+- Be sure to do reflections every lecture
+- Reading quiz, homework, and lab each week
+
 ### Week 1
 - Welcome
 - Please get started on Lab 1
