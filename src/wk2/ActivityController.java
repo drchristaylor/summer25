@@ -2,8 +2,12 @@ package wk2;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.text.Font;
+
+import java.util.Optional;
 
 public class ActivityController {
     @FXML
@@ -11,7 +15,11 @@ public class ActivityController {
 
     @FXML
     private void handleBigger(ActionEvent actionEvent) {
-        resize(1.2);
+        Alert alert = new Alert(Alert.AlertType.ERROR, "Are you sure you want to make it bigger?");
+        Optional<ButtonType> response = alert.showAndWait();
+        if (response.isPresent() && response.get() == ButtonType.OK) {
+            resize(1.2);
+        }
     }
 
     @FXML
