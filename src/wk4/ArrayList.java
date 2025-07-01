@@ -1,9 +1,6 @@
 package wk4;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 
 public class ArrayList<E> implements List<E> {
     private Object[] elements;
@@ -146,13 +143,104 @@ public class ArrayList<E> implements List<E> {
     }
 
     /**
-     * Returns an iterator over the elements in this list in proper sequence.
+     * Returns the index of the first occurrence of the specified element
+     * in this list, or -1 if this list does not contain the element.
+     * More formally, returns the lowest index {@code i} such that
+     * {@code Objects.equals(target, get(i))},
+     * or -1 if there is no such index.
      *
-     * @return an iterator over the elements in this list in proper sequence
+     * @param target element to search for
+     * @return the index of the first occurrence of the specified element in
+     * this list, or -1 if this list does not contain the element
+     * @throws ClassCastException   if the type of the specified element
+     *                              is incompatible with this list
+     *                              (<a href="Collection.html#optional-restrictions">optional</a>)
+     * @throws NullPointerException if the specified element is null and this
+     *                              list does not permit null elements
+     *                              (<a href="Collection.html#optional-restrictions">optional</a>)
      */
     @Override
-    public Iterator<E> iterator() {
-        return null;
+    public int indexOf(Object target) {
+        int index = 0;
+        boolean found = false;
+        while (!found && index < size()) {
+            if (Objects.equals(target, get(index))) {
+                found = true;
+            } else {
+                index++;
+            }
+        }
+        return (found ? index : -1);
+//        if (!found) {
+//            index = -1;
+//        }
+//        return index;
+//        for (int i = 0; i < size(); i++) {
+//            if (Objects.equals(elements[i], target)) {
+//                return i;
+//            }
+//        }
+//        return -1;
+    }
+
+    /**
+     * Removes the element at the specified position in this list (optional
+     * operation).  Shifts any subsequent elements to the left (subtracts one
+     * from their indices).  Returns the element that was removed from the
+     * list.
+     *
+     * @param index the index of the element to be removed
+     * @return the element previously at the specified position
+     * @throws UnsupportedOperationException if the {@code remove} operation
+     *                                       is not supported by this list
+     * @throws IndexOutOfBoundsException     if the index is out of range
+     *                                       ({@code index < 0 || index >= size()})
+     */
+    @Override
+    public E remove(int index) {
+        if (index < 0 || index >= size()) {
+            throw new IndexOutOfBoundsException("Size: " + size() + " Index: " + index);
+        }
+        Object[] newGuy = new Object[elements.length - 1];
+        for (int i = 0; i < index; i++) {
+            newGuy[i] = elements[i];
+        }
+        for (int i = index; i < size() - 1; i++) {
+            newGuy[i] = elements[i + 1];
+        }
+        E removed = (E) elements[index];
+        elements = newGuy;
+        return removed;
+    }
+
+    /**
+     * Removes the first occurrence of the specified element from this list,
+     * if it is present (optional operation).  If this list does not contain
+     * the element, it is unchanged.  More formally, removes the element with
+     * the lowest index {@code i} such that
+     * {@code Objects.equals(target, get(i))}
+     * (if such an element exists).  Returns {@code true} if this list
+     * contained the specified element (or equivalently, if this list changed
+     * as a result of the call).
+     *
+     * @param target element to be removed from this list, if present
+     * @return {@code true} if this list contained the specified element
+     * @throws ClassCastException            if the type of the specified element
+     *                                       is incompatible with this list
+     *                                       (<a href="Collection.html#optional-restrictions">optional</a>)
+     * @throws NullPointerException          if the specified element is null and this
+     *                                       list does not permit null elements
+     *                                       (<a href="Collection.html#optional-restrictions">optional</a>)
+     * @throws UnsupportedOperationException if the {@code remove} operation
+     *                                       is not supported by this list
+     */
+    @Override
+    public boolean remove(Object target) {
+        int index = indexOf(target);
+        if (index >= 0) {
+            remove(index);
+        }
+        return index >= 0;
     }
 
     /**
@@ -173,7 +261,17 @@ public class ArrayList<E> implements List<E> {
      */
     @Override
     public Object[] toArray() {
-        return new Object[0];
+        return Arrays.copyOf(elements, elements.length);
+    }
+
+    /**
+     * Returns an iterator over the elements in this list in proper sequence.
+     *
+     * @return an iterator over the elements in this list in proper sequence
+     */
+    @Override
+    public Iterator<E> iterator() {
+        return null;
     }
 
     /**
@@ -218,32 +316,6 @@ public class ArrayList<E> implements List<E> {
     @Override
     public <T> T[] toArray(T[] a) {
         return null;
-    }
-
-    /**
-     * Removes the first occurrence of the specified element from this list,
-     * if it is present (optional operation).  If this list does not contain
-     * the element, it is unchanged.  More formally, removes the element with
-     * the lowest index {@code i} such that
-     * {@code Objects.equals(o, get(i))}
-     * (if such an element exists).  Returns {@code true} if this list
-     * contained the specified element (or equivalently, if this list changed
-     * as a result of the call).
-     *
-     * @param o element to be removed from this list, if present
-     * @return {@code true} if this list contained the specified element
-     * @throws ClassCastException            if the type of the specified element
-     *                                       is incompatible with this list
-     *                                       (<a href="Collection.html#optional-restrictions">optional</a>)
-     * @throws NullPointerException          if the specified element is null and this
-     *                                       list does not permit null elements
-     *                                       (<a href="Collection.html#optional-restrictions">optional</a>)
-     * @throws UnsupportedOperationException if the {@code remove} operation
-     *                                       is not supported by this list
-     */
-    @Override
-    public boolean remove(Object o) {
-        return false;
     }
 
     /**
@@ -397,46 +469,6 @@ public class ArrayList<E> implements List<E> {
     @Override
     public void add(int index, E element) {
 
-    }
-
-    /**
-     * Removes the element at the specified position in this list (optional
-     * operation).  Shifts any subsequent elements to the left (subtracts one
-     * from their indices).  Returns the element that was removed from the
-     * list.
-     *
-     * @param index the index of the element to be removed
-     * @return the element previously at the specified position
-     * @throws UnsupportedOperationException if the {@code remove} operation
-     *                                       is not supported by this list
-     * @throws IndexOutOfBoundsException     if the index is out of range
-     *                                       ({@code index < 0 || index >= size()})
-     */
-    @Override
-    public E remove(int index) {
-        return null;
-    }
-
-    /**
-     * Returns the index of the first occurrence of the specified element
-     * in this list, or -1 if this list does not contain the element.
-     * More formally, returns the lowest index {@code i} such that
-     * {@code Objects.equals(o, get(i))},
-     * or -1 if there is no such index.
-     *
-     * @param o element to search for
-     * @return the index of the first occurrence of the specified element in
-     * this list, or -1 if this list does not contain the element
-     * @throws ClassCastException   if the type of the specified element
-     *                              is incompatible with this list
-     *                              (<a href="Collection.html#optional-restrictions">optional</a>)
-     * @throws NullPointerException if the specified element is null and this
-     *                              list does not permit null elements
-     *                              (<a href="Collection.html#optional-restrictions">optional</a>)
-     */
-    @Override
-    public int indexOf(Object o) {
-        return 0;
     }
 
     /**
