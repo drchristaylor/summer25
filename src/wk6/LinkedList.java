@@ -5,7 +5,7 @@ import java.util.*;
 public class LinkedList<E> implements List<E> {
     public static void main(String[] args) {
         System.out.println(Arrays.toString(args));
-        System.out.println(args[2]);
+        System.out.println(args[1]);
     }
 
     private static class Node<E> {
@@ -68,26 +68,54 @@ public class LinkedList<E> implements List<E> {
         return found ? index : -1;
     }
 
-    // Adding to the front for now... will fix to add to back tomorrow
     @Override
     public boolean add(E e) {
-        head = new Node(e, head);
+        if (head == null) {
+            head = new Node<>(e);
+        } else {
+            Node<E> walker = head;
+            while (walker.next != null) {
+                walker = walker.next;
+            }
+            walker.next = new Node<>(e);
+        }
         return true;
     }
 
     @Override
-    public boolean remove(Object o) {
-        return false;
+    public boolean remove(Object target) {
+        boolean removed = false;
+        if (head != null && Objects.equals(head.value, target)) {
+            head = head.next;
+            removed = true;
+        } else {
+            Node<E> walker = head;
+            while (!removed && walker != null) {
+                if (walker.next != null && Objects.equals(walker.next.value, target)) {
+                    walker.next = walker.next.next;
+                    removed = true;
+                }
+                walker = walker.next;
+            }
+        }
+        return removed;
     }
 
     @Override
     public void clear() {
-
+        head = null;
     }
 
     @Override
     public E get(int index) {
-        return null;
+        Node<E> walker = head;
+        if (index < 0 || index >= size()){
+            throw new IndexOutOfBoundsException();
+        }
+        for(int i = 0; i < index; i++){
+            walker = walker.next;
+        }
+        return walker.value;
     }
 
     @Override
@@ -97,7 +125,18 @@ public class LinkedList<E> implements List<E> {
 
     @Override
     public void add(int index, E element) {
-
+        if (index < 0 || index > size()) {
+            throw new IndexOutOfBoundsException("error message");
+        }
+        if (index == 0) {
+            head = new Node<>(element, head);
+        } else {
+            Node<E> walker = head;
+            for(int i = 0; i < index - 1; i++){
+                walker = walker.next;
+            }
+            walker.next = new Node<>(element, walker.next);
+        }
     }
 
     @Override
