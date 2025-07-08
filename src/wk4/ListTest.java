@@ -10,7 +10,7 @@ class ListTest {
 
     @BeforeEach
     void setUp() {
-        list = new wk6.LinkedList<>();
+        list = new java.util.LinkedList<>();
     }
 
     @AfterEach
