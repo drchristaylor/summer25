@@ -271,7 +271,24 @@ public class ArrayList<E> implements List<E> {
      */
     @Override
     public Iterator<E> iterator() {
-        return null;
+        return new IteratorImp();
+    }
+
+    private class IteratorImp implements Iterator<E> {
+        private int index = -1;
+
+        @Override
+        public boolean hasNext() {
+            return index < elements.length - 1;
+        }
+
+        @Override
+        public E next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
+            return (E) elements[++index];
+        }
     }
 
     /**
