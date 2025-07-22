@@ -2,6 +2,15 @@ package wk8;
 
 public class Driver {
     public static void main(String[] args) {
+        BST tree = new BST();
+        tree.add("GL");
+        tree.add("AJ");
+        tree.add("MB");
+        tree.add("SM");
+        System.out.println(tree.contains("MB"));
+    }
+
+    public static void main2(String[] args) {
         int[] nums = {1, 2, 3, 4, 5, 12, 14, 18, 22};
         System.out.println(find(nums, -2, 0, nums.length));
     }

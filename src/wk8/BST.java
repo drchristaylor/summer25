@@ -47,7 +47,38 @@ public class BST implements Set<String> {
 
     @Override
     public boolean add(String s) {
-        return false;
+        if (s == null) {
+            throw new IllegalArgumentException("Tree does not support nulls");
+        }
+        boolean added = false;
+        if (root == null) {
+            root = new Node(s);
+            added = true;
+        } else {
+            added = add(root, s);
+        }
+        return added;
+    }
+
+    private boolean add(Node subroot, String s) {
+        boolean added = false;
+        int compareResult = s.compareTo(subroot.value);
+        if (compareResult < 0) {
+            if (subroot.lKid == null) {
+                subroot.lKid = new Node(s);
+                added = true;
+            } else {
+                added = add(subroot.lKid, s);
+            }
+        } else if (compareResult > 0) {
+            if (subroot.rKid == null) {
+                subroot.rKid = new Node(s);
+                added = true;
+            } else {
+                added = add(subroot.rKid, s);
+            }
+        }
+        return added;
     }
 
     @Override
@@ -57,6 +88,14 @@ public class BST implements Set<String> {
 
     private int size(Node subroot) {
         return subroot == null ? 0 : 1 + size(subroot.lKid) + size(subroot.rKid);
+    }
+
+    public int height() {
+        return height(root);
+    }
+
+    private int height(Node subroot) {
+        return subroot == null ? 0 : 1 + Math.max(height(subroot.lKid), height(subroot.rKid));
     }
 
     @Override
