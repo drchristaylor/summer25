@@ -10,6 +10,7 @@ public class BST implements Set<String> {
         String value;
         Node lKid;
         Node rKid;
+        Node parent;
 
         Node(String value) {
             this.value = value;
@@ -43,6 +44,30 @@ public class BST implements Set<String> {
         } else {
             return contains(subroot.rKid, target);
         }
+    }
+
+    private Node rightRotate(Node C) {
+        if (C == null || C.lKid == null) {
+            throw new IllegalArgumentException("Can't rotate without two nodes");
+        }
+        Node B = C.lKid;
+        Node y = B.rKid;
+        Node parent = C.parent;
+        B.rKid = C;          // 1
+        if (y != null) {
+            y.parent = C;    // 2
+        }
+        C.lKid = y;          // 3
+        B.parent = C.parent; // 4
+        C.parent = B;        // 5
+        if (parent != null) {
+            if (parent.rKid == C) { //
+                parent.rKid = B;    //
+            } else {                // 6
+                parent.lKid = B;    //
+            }                       //
+        }
+        return B;
     }
 
     @Override
